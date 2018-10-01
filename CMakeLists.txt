@@ -2,6 +2,11 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.0)
 PROJECT(algo)
 
 SET( CMAKE_BUILD_TYPE DEBUG )
+option( task1_1 "task 1_1" on )
+
+if ( task1_1 )
+  SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DTASK1_1=1 " )
+endif()
 
 SET( CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} ${CMAKE_CXX_FLAGS} -march=native" )
 SET( CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -pedantic -D_GLIBCXX_DEBUG -fsanitize=address" )
@@ -14,7 +19,9 @@ SET( EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin )
 
 SET( CMAKE_EXPORT_COMPILE_COMMANDS on )
 
-ADD_EXECUTABLE(bin_algo1_1 src/1_1.cpp)
+ADD_EXECUTABLE(bin_algo
+  src/stammdaten.cpp
+  src/main.cpp)
 
 #TARGET_INCLUDE_DIRECTORIES( bin_algo )
 #TARGET_LINK_LIBRARIES( bin_algo )
