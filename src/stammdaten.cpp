@@ -20,9 +20,6 @@ stammdaten listInsertElement(stammdaten list, char const *_last_name, char const
     if( newUser->next ){
       newUser->next->prev = newUser;
     }
-    else{
-      newUser->next = nullptr;
-    }
   }
   else{
     newUser->next = nullptr;
