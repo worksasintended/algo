@@ -20,8 +20,9 @@ SET( EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin )
 SET( CMAKE_EXPORT_COMPILE_COMMANDS on )
 
 ADD_EXECUTABLE(bin_algo
+  src/main.cpp
   src/stammdaten.cpp
-  src/main.cpp)
+)
 
 #TARGET_INCLUDE_DIRECTORIES( bin_algo )
 #TARGET_LINK_LIBRARIES( bin_algo )

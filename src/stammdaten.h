@@ -1,22 +1,36 @@
-#include<string>
-struct list_stammdaten{
-    std::string last_name;
-    std::string first_name;
+ struct list_stammdaten{
+    char last_name[50];
+    char first_name[50];
     int birth;
     int id;
-    struct stammdaten *prev=NULL;
-    struct stammdaten *next=NULL;
-    ~list_stammdaten(){ }
+    struct list_stammdaten* prev;
+    struct list_stammdaten* next;
 };
+typedef struct list_stammdaten list_stammdaten;
+typedef list_stammdaten* stammdaten;
 
 
-//void printElement();
-//void insertElement();
-//void deleteElement();
-//int findElement();
-//int countElements();
-//void printList();
-//void writeToDisk();
-//struct stammdaten readFromDisk();
+
+
+
+void listFree(stammdaten list);
+
+void listPrintElement(stammdaten list);
+
+stammdaten listInsertElement(stammdaten list, char const *_last_name, char const *_first_name, int _id, int _birth);
+
+void listDeleteElement(stammdaten);
+
+stammdaten listFirstElement(stammdaten list);
+
+stammdaten listFindElement(stammdaten list, int id);
+
+int listCountElements(stammdaten list);
+
+void listPrintList(stammdaten list);
+
+int listWriteToDisk(stammdaten list, const char *filename);
+
+stammdaten listReadFromDisk(const char *filename);
 
 
