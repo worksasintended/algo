@@ -1,6 +1,6 @@
  struct list_stammdaten{
-    char last_name[50];
-    char first_name[50];
+    char last_name[64];
+    char first_name[64];
     int birth;
     int id;
     struct list_stammdaten* prev;

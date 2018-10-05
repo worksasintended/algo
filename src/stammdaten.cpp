@@ -127,8 +127,8 @@ stammdaten listReadFromDisk(const char *filename){
   size_t len;
   //getline(&buffer,&size,stdin);
   while ( (getline(&line, &len,file)) != -1 ){
-    char first_name[50];
-    char last_name[50];
+    char first_name[64];
+    char last_name[64];
     int birth;
     int id;
     sscanf(line, "%[^,],%[^,],%d,%d", first_name, last_name, &birth, &id);
