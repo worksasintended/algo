@@ -103,7 +103,7 @@ stammdaten listFindElement(stammdaten list, int id){
 
 int listWriteToDisk(stammdaten list, const char *filename){
   FILE *file = fopen(filename, "w");
-  if(file ==NULL ){
+  if( !file ){
     printf("Error opening file!\n");
     return 1;
   }
@@ -119,7 +119,7 @@ int listWriteToDisk(stammdaten list, const char *filename){
 stammdaten listReadFromDisk(const char *filename){
   FILE *file = fopen(filename, "r");
   stammdaten stammdatenList = nullptr;
-  if( file == NULL){
+  if( !file ){
     printf("Error opening file!\n");
     return stammdatenList;
   }
