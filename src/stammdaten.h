@@ -8,29 +8,31 @@
 };
 typedef struct list_stammdaten list_stammdaten;
 typedef list_stammdaten* stammdaten;
+struct list_S{
+  stammdaten first;
+  stammdaten last;
+};
+typedef struct list_S list_S;
+typedef list_S* list; //dont use namespace std!!
 
 
 
-
-
-void listFree(stammdaten list);
+void listFree(list list);
 
 void listPrintElement(stammdaten list);
 
-stammdaten listInsertElement(stammdaten list, char const *_last_name, char const *_first_name, int _id, int _birth);
+stammdaten listInsertElement(list list, char const *_last_name, char const *_first_name, int _id, int _birth);
 
-void listDeleteElement(stammdaten);
+void listDeleteElement(list list, stammdaten elem);
 
-stammdaten listFirstElement(stammdaten list);
+stammdaten listFindElement(list list, int id);
 
-stammdaten listFindElement(stammdaten list, int id);
+int listCountElements(list list);
 
-int listCountElements(stammdaten list);
+void listPrintList(list list);
 
-void listPrintList(stammdaten list);
+int listWriteToDisk(list list, const char *filename);
 
-int listWriteToDisk(stammdaten list, const char *filename);
-
-stammdaten listReadFromDisk(const char *filename);
+list listReadFromDisk(const char *filename);
 
 

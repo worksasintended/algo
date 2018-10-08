@@ -9,21 +9,20 @@ void listPrintElement(stammdaten list){
 }
 
 
-stammdaten listInsertElement(stammdaten list, char const *_last_name, char const *_first_name, int _id, int _birth){
+stammdaten listInsertElement(list list, char const *_last_name, char const *_first_name, int _id, int _birth){
   stammdaten newUser = (stammdaten)malloc(sizeof(list_stammdaten));
   // if not a new list 
-  if ( list ){
-    newUser->prev = list;
-    newUser->next = list->next;
-    list->next = newUser;
-    //if not last
-    if( newUser->next ){
-      newUser->next->prev = newUser;
-    }
+  if ( list->first ){
+    newUser->prev = list->last;
+    newUser->next = nullptr;
+    list->last->next = newUser;
+    list->last = newUser;
   }
   else{
     newUser->next = nullptr;
     newUser->prev = nullptr;
+    list->first = newUser;
+    list->last = newUser;
   } 
   strcpy(newUser->last_name, _last_name);
   strcpy(newUser->first_name, _first_name);
@@ -32,93 +31,90 @@ stammdaten listInsertElement(stammdaten list, char const *_last_name, char const
 
   return newUser;
 }
-
-//find first element in list
-stammdaten listFirstElement(stammdaten list){
-  while( list->prev ){
-    list = list->prev;
+void listDeleteElement(list list, stammdaten elem){
+  //check for nullptr
+  if(list && elem){
+    //if in middle
+    if(elem->next && elem->prev){
+      elem->prev->next = elem->next;
+      elem->next->prev = elem->prev;
+    }
+    //if last
+    else if(elem->prev){
+      elem->prev->next = nullptr;
+      list->last = elem->prev;
+    }
+    //if fist
+    else{
+      elem->next->prev = nullptr;
+      list->first = elem->next;
+    }
   }
-  return list;
+  free(elem);
 }
-
-void listDeleteElement(stammdaten date){
-  //if middle
-  if( date->next && date->prev){
-    date->prev->next = date->next;
-    date->next->prev = date->prev;
- }
-  //if last 
-  else if( date->prev ){
-    date->prev->next = nullptr;
-  }
-  //if first
-  else if( date->next ){
-    date->next->prev = nullptr;
-  }
-  free(date);
-}
-
 //free complete list
-void listFree(stammdaten list){
-  //jump to first element
-  list = listFirstElement(list);
-  //delete all elements from left to right
-  while(list){
-    stammdaten next = list->next;
-    free(list);
-    list = next;
+void listFree(list list){
+  stammdaten elem = list->first;
+  while(elem){
+    stammdaten next = elem->next;
+    free(elem);
+    elem = next;
   }
+  free(list);
 }
-
 //print complete list
-void listPrintList(stammdaten list){
-  list = listFirstElement(list);
-  while( list ){
-    listPrintElement(list);
-    list = list->next;
+void listPrintList(list list){
+  stammdaten elem = list->first;
+  while( elem ){
+    listPrintElement(elem);
+    elem = elem->next;
   }
 }
 
-int listCountElements(stammdaten list){
-  list = listFirstElement(list);
+
+int listCountElements(list list){
+  stammdaten elem = list->first;
   int counter = 0;
-  while( list ){
+  while( elem ){
     counter++;
-    list = list->next;
+    elem = elem->next;
   }
   return counter;
 }
 
+
 //returns nullptr if element with id does not exist
-stammdaten listFindElement(stammdaten list, int id){
-  list = listFirstElement(list);
-  while(list && list->id != id){
-    list=list->next;
+stammdaten listFindElement(list list, int id){
+  stammdaten elem = list->first;
+  while(elem && elem->id != id){
+    elem=elem->next;
   }
-  return list;
+  return elem;
 }
 
-int listWriteToDisk(stammdaten list, const char *filename){
+int listWriteToDisk(list list, const char *filename){
   FILE *file = fopen(filename, "w");
   if( !file ){
     printf("Error opening file!\n");
     return 1;
   }
-  list = listFirstElement(list);
-  while(list){
-    fprintf(file, "%s,%s,%d,%d\n",list->last_name, list->first_name, list->birth, list->id);
-  list = list->next;
+  stammdaten elem = list->first;
+  while(elem){
+    fprintf(file, "%s,%s,%d,%d\n",elem->last_name, elem->first_name, elem->birth, elem->id);
+  elem = elem->next;
   }
   fclose(file);
   return 0;
 }
 
-stammdaten listReadFromDisk(const char *filename){
+list listReadFromDisk(const char *filename){
   FILE *file = fopen(filename, "r");
-  stammdaten stammdatenList = nullptr;
+  list myList  = (list)malloc(sizeof(list_S));
+  myList->last = nullptr;
+  myList->first = nullptr;
   if( !file ){
     printf("Error opening file!\n");
-    return stammdatenList;
+    return myList;
   }
   char *line;
   size_t len;
@@ -129,15 +125,13 @@ stammdaten listReadFromDisk(const char *filename){
     int birth;
     int id;
     sscanf(line, "%[^,],%[^,],%d,%d", first_name, last_name, &birth, &id);
-    stammdatenList = listInsertElement(stammdatenList, last_name, first_name, id, birth);
+    listInsertElement(myList, last_name, first_name, id, birth);
   }
   //tidy up!
   free(line);
   fclose(file);
-  //as we dont call free() it is ok to just return one of the list
-  return listFirstElement(stammdatenList);
+  return myList;
 }
-
 
 
 

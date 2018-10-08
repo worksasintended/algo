@@ -8,46 +8,50 @@ int main(int argc, char** argv){
 #if TASK1_1
   //c style solution called in c++
   std::cout << "TASK 1_1" << std::endl << "-------------------------------------" << std::endl;
-
-  //init first element of list, same as adding to nullptr
-  stammdaten initUser = listInsertElement(nullptr, "Marschall", "Marc", 1, 19001114);
+  //create list
+  list myList = (list)malloc(sizeof(list_S));
+  myList->first = nullptr;
+  myList->last = nullptr;
+  //add first element to list
+  stammdaten initUser = listInsertElement(myList, "Marschall", "Marc", 1, 19001114);
   std::cout << "This is the first element of the list:" << std::endl ;
   listPrintElement(initUser);
-
   //append element 
-  stammdaten user2 = listInsertElement(initUser, "Marschall", "Pia", 2, 19940108);
-  listInsertElement(user2, "Marschall", "Jul", 3, 20151224);
+  listInsertElement(myList, "Marschall", "Pia", 2, 19940108);
+  listInsertElement(myList, "Marschall", "Jul", 3, 20151224);
+  listInsertElement(myList, "Marschall", "Kevin", 4, 20151224);
+  listInsertElement(myList, "Marschall", "Tom", 5, 20151224);
   std::cout << std::endl << "These are all elements after adding additional users" << std::endl;
-  listPrintList(user2); 
-
+  listPrintList(myList); 
   //print number of elements
-  std::cout << std::endl << "Current number of elements in the list: " << listCountElements(user2) << std::endl;
+  std::cout << std::endl << "Current number of elements in the list: " << listCountElements(myList) << std::endl;
 
   //search for element containing id
   std::cout << std::endl << "Searching for user with id 0002: " << std::endl;
-  listPrintElement(listFindElement(initUser, 2));
-
+  listPrintElement(listFindElement(myList, 2));
   //delete elemente
-  listDeleteElement(initUser);
+  listDeleteElement(myList, initUser);
+  listDeleteElement(myList, listFindElement(myList, 5));
+  listDeleteElement(myList, listFindElement(myList, 3));
+  listDeleteElement(myList, listFindElement(myList, 3));
   std::cout << std::endl << "These are all elements after removing first list element" << std::endl;
-  listPrintList(user2);
-  
+  listPrintList(myList);
+
   //write on disk
   const char* filename = "list_stammdaten.dat";
-  if(!listWriteToDisk(user2, filename)){
+  if(!listWriteToDisk(myList, filename)){
     std::cout << std::endl << "List has been written to " << filename << std::endl; 
   }
 
   //readFromDisk
-  stammdaten newList = listReadFromDisk("list_stammdaten.dat");
+  list newList = listReadFromDisk("list_stammdaten.dat");
   std::cout << std::endl << "List read from 'list_stammdaten.dat' at disk: " << std::endl;
   listPrintList(newList); 
 
   //free lists
   std::cout << std::endl << "Free the lists!" << std::endl;
-  listFree(user2);
+  listFree(myList);
   listFree(newList);
 #endif
-
   return 0;
 }
