@@ -3,6 +3,9 @@
 #if TASK1_1
 #include"stammdaten.h"
 #endif
+#if TASK1_2
+#include"stammdaten_array.h"
+#endif
 int main(int argc, char** argv){
 
 #if TASK1_1
@@ -53,5 +56,21 @@ int main(int argc, char** argv){
   listFree(myList);
   listFree(newList);
 #endif
+
+#if TASK1_2
+ sdata dataset[20];
+ for(auto sdate:dataset){
+   sdate = (sdata)malloc(sizeof(sdataS));
+   sdate->next = -1;
+   sdate->prev = -1;
+ }
+ 
+ for(auto sdate:dataset){
+  free(sdate);
+ } 
+#endif
+
+
+
   return 0;
 }

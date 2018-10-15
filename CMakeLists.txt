@@ -2,10 +2,13 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.0)
 PROJECT(algo)
 
 SET( CMAKE_BUILD_TYPE DEBUG )
-option( task1_1 "task 1_1" on )
-
+option( task1_1 "task 1_1" off )
+option( task1_2 "task 1_2" on )
 if ( task1_1 )
   SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DTASK1_1=1 " )
+endif()
+if (task1_2)
+  SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DTASK1_2=2" )
 endif()
 
 SET( CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} ${CMAKE_CXX_FLAGS} -march=native" )
@@ -22,6 +25,7 @@ SET( CMAKE_EXPORT_COMPILE_COMMANDS on )
 ADD_EXECUTABLE(bin_algo
   src/main.cpp
   src/stammdaten.cpp
+  src/stammdaten_array.cpp
 )
 
 #TARGET_INCLUDE_DIRECTORIES( bin_algo )
